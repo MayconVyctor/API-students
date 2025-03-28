@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/MayconVyctor/API-students/db"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -33,6 +34,7 @@ func getStudents(c echo.Context) error {
 }
 
 func createStudent(c echo.Context) error {
+	db.AddStudent()
 	return c.String(http.StatusOK, "Create Student")
 }
 
