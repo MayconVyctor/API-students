@@ -1,2 +1,2 @@
 # API-students
- API feita em Golang, para gerenciar alunos de um curso 
+API made in Golang to manage students of a course
