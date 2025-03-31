@@ -1,67 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"log"
 
-	"github.com/MayconVyctor/API-students/db"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/MayconVyctor/API-students/api"
 )
 
 func main() {
-	// Echo instance
-	e := echo.New()
+	server := api.NewServer()
 
-	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	server.ConfigureRoutes()
 
-	// Routes
-	e.GET("/students", getStudents)
-	e.POST("/students", createStudent)
-	e.GET("/students/:id", getStudent)
-	e.PUT("/students/:id", updateStudent)
-	e.DELETE("/student/:id", deleteStudent)
-
-	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
-}
-
-// Handler
-func getStudents(c echo.Context) error {
-	students, err := db.GetStudents()
-	if err != nil {
-		return c.String(http.StatusNotFound, "Failed to get students")
+	if err := server.Start(); err != nil {
+		log.Fatal(err)
 	}
-	return c.JSON(http.StatusOK, students)
-}
-
-func createStudent(c echo.Context) error {
-	student := db.Student{}
-	if err := c.Bind(&student); err != nil {
-		return err
-	}
-	if err := db.AddStudent(student); err != nil {
-		return c.String(http.StatusInternalServerError, "Error to create Student")
-	}
-	return c.String(http.StatusOK, "Create Student")
-}
-
-func getStudent(c echo.Context) error {
-	id := c.Param("id")
-	getStud := fmt.Sprintf("Get %s student", id)
-	return c.String(http.StatusOK, getStud)
-}
-
-func updateStudent(c echo.Context) error {
-	id := c.Param("id")
-	updateStud := fmt.Sprintf("Update %s student", id)
-	return c.String(http.StatusOK, updateStud)
-}
-
-func deleteStudent(c echo.Context) error {
-	id := c.Param("id")
-	deleteStud := fmt.Sprintf("Delete %s student", id)
-	return c.String(http.StatusOK, deleteStud)
 }
