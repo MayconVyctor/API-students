@@ -2,12 +2,12 @@ package api
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strconv"
 
-	"github.com/MayconVyctor/API-students/db"
+	"github.com/MayconVyctor/API-students/schemas"
 	"github.com/labstack/echo/v4"
+	"github.com/rs/zerolog/log"
 	"gorm.io/gorm"
 )
 
@@ -21,10 +21,24 @@ func (api *API) getStudents(c echo.Context) error {
 }
 
 func (api *API) createStudent(c echo.Context) error {
-	student := db.Student{}
-	if err := c.Bind(&student); err != nil {
+	studentReq := StudentRequest{}
+	if err := c.Bind(&studentReq); err != nil {
 		return err
 	}
+
+	if err := studentReq.Validate(); err != nil {
+		log.Error().Err(err).Msgf("[api] error validating struct")
+		return c.String(http.StatusBadRequest, "Error validating student")
+	}
+
+	student := schemas.Student{
+		Name:   studentReq.Name,
+		Email:  studentReq.Email,
+		CPF:    studentReq.CPF,
+		Age:    studentReq.Age,
+		Active: *studentReq.Active,
+	}
+
 	if err := api.DB.AddStudent(student); err != nil {
 		return c.String(http.StatusInternalServerError, "Error to create Student")
 	}
@@ -56,7 +70,7 @@ func (api *API) updateStudent(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "Failed to get student id")
 	}
 
-	receivedStudent := db.Student{}
+	receivedStudent := schemas.Student{}
 	if err := c.Bind(&receivedStudent); err != nil {
 		return err
 	}
@@ -80,13 +94,7 @@ func (api *API) updateStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
-func (api *API) deleteStudent(c echo.Context) error {
-	id := c.Param("id")
-	deleteStud := fmt.Sprintf("Delete %s student", id)
-	return c.String(http.StatusOK, deleteStud)
-}
-
-func updateStudentInfo(receivedStudent, student db.Student) db.Student {
+func updateStudentInfo(receivedStudent, student schemas.Student) schemas.Student {
 	if receivedStudent.Name != "" {
 		student.Name = receivedStudent.Name
 	}
@@ -107,4 +115,25 @@ func updateStudentInfo(receivedStudent, student db.Student) db.Student {
 		student.Active = receivedStudent.Active
 	}
 	return student
+}
+
+func (api *API) deleteStudent(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.String(http.StatusBadRequest, "Invalid student ID")
+	}
+
+	student, err := api.DB.GetStudent(id)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return c.String(http.StatusNotFound, "Student not found")
+		}
+		return c.String(http.StatusInternalServerError, "Failed to get student")
+	}
+
+	if err := api.DB.DeleteStudent(student); err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to delete student")
+	}
+
+	return c.JSON(http.StatusOK, student)
 }
