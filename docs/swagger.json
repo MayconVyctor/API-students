@@ -1,0 +1,213 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a sample server Student API",
+        "title": "Student API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/hello": {
+            "get": {
+                "description": "Retorna Hello",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "test"
+                ],
+                "summary": "Hello world",
+                "responses": {
+                    "200": {
+                        "description": "hello",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/students": {
+            "get": {
+                "description": "Retrieve students details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get a list of students",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schemas.StudentResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "post": {
+                "description": "Create and store a new student in the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Create student",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/schemas.StudentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/students/{id}": {
+            "get": {
+                "description": "Retrieve student details using the student's ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get student by ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schemas.StudentResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a student's information using their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Update an existing student",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schemas.StudentResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Remove a student from the database using their ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Delete a student",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schemas.StudentResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "schemas.StudentResponse": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "age": {
+                    "type": "integer",
+                    "example": 30
+                },
+                "cpf": {
+                    "type": "integer",
+                    "example": 98765432100
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "2025-03-31T12:00:00Z"
+                },
+                "deletedAt": {
+                    "description": "zero time",
+                    "type": "string",
+                    "example": "0001-01-01T00:00:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "maria@email.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "Maria Oliveira"
+                },
+                "updatedAt": {
+                    "type": "string",
+                    "example": "2025-03-31T12:30:00Z"
+                }
+            }
+        }
+    }
+}

@@ -11,7 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
-// Handler
+// getStudents godoc
+//
+// @Summary      Get a list of students
+// @Description  Retrieve students details
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// Param         register path int false "Registration"
+// @Success      200 {object} schemas.StudentResponse
+// @Failure      404
+// @Router       /students [get]
 func (api *API) getStudents(c echo.Context) error {
 	students, err := api.DB.GetStudents()
 	if err != nil {
@@ -35,7 +45,17 @@ func (api *API) getStudents(c echo.Context) error {
 	return c.JSON(http.StatusOK, listOfStudents)
 }
 
-func (api *API) createStudent(c echo.Context) error {
+// createStudent godoc
+//
+// @Summary      Create student
+// @Description  Create and store a new student in the database
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Success      201 {object} schemas.StudentResponse
+// @Failure      400
+// @Router       /students [post]
+func (api *API) CreateStudent(c echo.Context) error {
 	studentReq := StudentRequest{}
 	if err := c.Bind(&studentReq); err != nil {
 		return err
@@ -60,7 +80,18 @@ func (api *API) createStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
-func (api *API) getStudent(c echo.Context) error {
+// getStudent godoc
+//
+// @Summary      Get student by ID
+// @Description  Retrieve student details using the student's ID
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} schemas.StudentResponse
+// @Failure      404
+// @Failure      500
+// @Router       /students/{id} [get]
+func (api *API) GetStudent(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "Failed to get student id")
@@ -79,7 +110,18 @@ func (api *API) getStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
-func (api *API) updateStudent(c echo.Context) error {
+// updateStudent godoc
+//
+// @Summary      Update an existing student
+// @Description  Update a student's information using their ID
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} schemas.StudentResponse
+// @Failure      404
+// @Failure      500
+// @Router       /students/{id} [put]
+func (api *API) UpdateStudent(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.String(http.StatusInternalServerError, "Failed to get student id")
@@ -100,7 +142,7 @@ func (api *API) updateStudent(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "Failed to get student")
 	}
 
-	student := updateStudentInfo(receivedStudent, updatingStudent)
+	student := UpdateStudentInfo(receivedStudent, updatingStudent)
 
 	if err := api.DB.UpdateStudent(student); err != nil {
 		return c.String(http.StatusInternalServerError, "Failed to save student")
@@ -109,7 +151,7 @@ func (api *API) updateStudent(c echo.Context) error {
 	return c.JSON(http.StatusOK, student)
 }
 
-func updateStudentInfo(receivedStudent, student schemas.Student) schemas.Student {
+func UpdateStudentInfo(receivedStudent, student schemas.Student) schemas.Student {
 	if receivedStudent.Name != "" {
 		student.Name = receivedStudent.Name
 	}
@@ -132,7 +174,18 @@ func updateStudentInfo(receivedStudent, student schemas.Student) schemas.Student
 	return student
 }
 
-func (api *API) deleteStudent(c echo.Context) error {
+// deleteStudent godoc
+//
+// @Summary      Delete a student
+// @Description  Remove a student from the database using their ID
+// @Tags         students
+// @Accept       json
+// @Produce      json
+// @Success      200 {object} schemas.StudentResponse
+// @Failure      404
+// @Failure      500
+// @Router       /students/{id} [delete]
+func (api *API) DeleteStudent(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.String(http.StatusBadRequest, "Invalid student ID")

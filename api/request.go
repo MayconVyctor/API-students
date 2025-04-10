@@ -3,11 +3,11 @@ package api
 import "fmt"
 
 type StudentRequest struct {
-	Name   string `json:"name"`
-	CPF    int    `json:"cpf"`
-	Email  string `json:"email"`
-	Age    int    `json:"age"`
-	Active *bool  `json:"active"`
+	Name   string `json:"name" example:""`
+	CPF    int    `json:"cpf" example:""`
+	Email  string `json:"email" example:""`
+	Age    int    `json:"age" example:""`
+	Active *bool  `json:"active" example:""`
 }
 
 func errParamRequired(param, typ string) error {

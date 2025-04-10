@@ -3,8 +3,11 @@ package api
 import (
 	"github.com/MayconVyctor/API-students/db"
 
+	_ "github.com/MayconVyctor/API-students/docs"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 type API struct {
@@ -30,10 +33,11 @@ func NewServer() *API {
 func (api *API) ConfigureRoutes() {
 
 	api.Echo.GET("/students", api.getStudents)
-	api.Echo.POST("/students", api.createStudent)
-	api.Echo.GET("/students/:id", api.getStudent)
-	api.Echo.PUT("/students/:id", api.updateStudent)
-	api.Echo.DELETE("/students/:id", api.deleteStudent)
+	api.Echo.POST("/students", api.CreateStudent)
+	api.Echo.GET("/students/:id", api.GetStudent)
+	api.Echo.PUT("/students/:id", api.UpdateStudent)
+	api.Echo.DELETE("/students/:id", api.DeleteStudent)
+	api.Echo.GET("/swagger/*", echoSwagger.WrapHandler)
 }
 
 func (api *API) Start() error {

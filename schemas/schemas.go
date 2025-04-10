@@ -16,15 +16,15 @@ type Student struct {
 }
 
 type StudentResponse struct {
-	ID        int       `json:"id"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	DeletedAt time.Time `json:"deletedAt"`
-	Name      string    `json:"name"`
-	CPF       int       `json:"cpf"`
-	Email     string    `json:"email"`
-	Age       int       `json:"age"`
-	Active    bool      `json:"active"`
+	ID        int       `json:"id" example:"1"`
+	CreatedAt time.Time `json:"createdAt" example:"2025-03-31T12:00:00Z"`
+	UpdatedAt time.Time `json:"updatedAt" example:"2025-03-31T12:30:00Z"`
+	DeletedAt time.Time `json:"deletedAt" example:"0001-01-01T00:00:00Z"` // zero time
+	Name      string    `json:"name" example:""`
+	CPF       int       `json:"cpf" example:""`
+	Email     string    `json:"email" example:""`
+	Age       int       `json:"age" example:""`
+	Active    bool      `json:"active" example:""`
 }
 
 func NewResponse(students []Student) []StudentResponse {
