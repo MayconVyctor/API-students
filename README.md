@@ -1,5 +1,32 @@
 # API-students
-API made in Golang to manage students of a course
+📚 Students API
+Description:
+This project was developed during the Golang from Zero course. It is a RESTful API built to manage student records, providing basic CRUD operations like creating, retrieving, updating, and deleting students.
+
+🛠️ Technologies Used:
+
+Go (Golang) — main programming language
+
+Echo — lightweight and fast web framework for building APIs
+
+SQLite — lightweight, embedded database for data persistence
+
+Git — version control system
+
+✅ Features:
+
+Create new student records
+
+Retrieve all students or by ID
+
+Update student information
+
+Delete student records
+
+🎯 Project Goal:
+The goal of this project is to put into practice the concepts learned in the course, focusing on Go and the fundamentals of RESTful API development. The code is structured using clean practices to ensure readability, maintainability, and ease of learning.
+
+
 
 Routes: 
 -GET /students - List all students
