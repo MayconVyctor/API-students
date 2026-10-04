@@ -1,6 +1,5 @@
 # API-students
 Students API
-Description:
 This project was developed during the Golang from Zero course. It is a RESTful API built to manage student records, providing basic CRUD operations like creating, retrieving, updating, and deleting students.
 
 Technologies Used:
@@ -13,7 +12,7 @@ SQLite — lightweight, embedded database for data persistence
 
 Git — version control system
 
-✅ Features:
+ Features:
 
 Create new student records
 
